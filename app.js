@@ -8,28 +8,19 @@ const nunjucks = require('nunjucks');
 const http = require('http');
 const server = http.createServer();
 const PORT = 3000;
+const tweetBank = require('./tweetBank');
+const routes = require('./routes');
+
+
 
 app.set('view engine', 'html'); // have res.render work with html files
 app.engine('html', nunjucks.render);
 nunjucks.configure('views', {noCache: true});
-// nunjucks.render('index.html', locals, function (err, output) {
-//   if (err) {
-//     throw err;
-//   }
-//   console.log(output);
-// });
+app.use('/', routes);
 
 app.use(function (req, res, next) {
   console.log(`${req.method} ${req.url} ${res.statusCode}`);
-  // if (req.url.split('/')[1] === 'special') {
-  //   console.log(`You reached the special area`);
-  // }
   next();
-});
-
-app.get('/', function (req, res) {
-  const people = [{name: 'Full'}, {name: 'Stacker'}, {name: 'Son'}];
-  res.render( 'index', {title: 'Hall of Fame', people: people} );
 });
 
 app.listen(3000, function () {
