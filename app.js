@@ -4,6 +4,8 @@ const volleyball = require('volleyball');
 app.use(volleyball);
 const morgan = require('morgan');
 morgan('tiny');
+const nunjucks = require('nunjucks');
+
 
 const http = require('http');
 const server = http.createServer();
@@ -36,3 +38,19 @@ app.listen(3000, function () {
   console.log('Server listening on port 3000!');
 });
 
+
+var locals = {
+  title: 'An Example',
+  people: [
+      { name: 'Gandalf'},
+      { name: 'Frodo' },
+      { name: 'Hermione'}
+  ]
+};
+nunjucks.configure('views', {noCache: true});
+nunjucks.render('index.html', locals, function (err, output) {
+  if (err) {
+    throw err;
+  }
+  console.log(output);
+});
